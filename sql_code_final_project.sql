@@ -12,6 +12,7 @@ CREATE TABLE final_project.user_tab(
 	country text
 );
 
+-- 1. Mengitung banyaknya user per negara
 SELECT 
 	country, 
 	COUNT(DISTINCT order_tab.userid) AS count_user
@@ -21,7 +22,7 @@ JOIN final_project.user_tab
 GROUP BY 1
 ORDER BY 2 DESC;
 
-
+-- 2. Menghitung banyaknya order per negara
 SELECT 
 	user_tab.country,
 	COUNT(DISTINCT order_tab.orderid) AS count_order
@@ -31,6 +32,7 @@ ON final_project.order_tab.userid = final_project.user_tab.userid
 GROUP BY 1
 ORDER BY 2 DESC;
 
+-- 3. Menampilkan tanggal order pertama untuk setiap user
 SELECT 
 	user_tab.userid, 
 	MIN(register_time) AS first_order_date
@@ -40,6 +42,7 @@ JOIN final_project.user_tab
 GROUP BY 1
 ORDER BY 2;
 
+-- 4. Menghitung nilai belanja dari first order untuk setiap user, urutkan berdasarkan order id (ascending)
 SELECT 
 	o.userid, 
 	o.orderid, 
@@ -54,6 +57,7 @@ JOIN (
 	ON o.userid = first_orders.userid AND o.order_time = first_orders.first_order_time
 ORDER BY o.orderid ASC;
 
+-- 5. Mengidentifikasi anomali pada data
 SELECT 
 	o.orderid, 
 	o.userid, 
